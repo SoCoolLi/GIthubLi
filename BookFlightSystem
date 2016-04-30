@@ -1,0 +1,255 @@
+package com.flight.DBUtils;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import com.flight.domain.Account;
+import com.flight.domain.Comment;
+import com.flight.domain.Flight;
+import com.flight.domain.Order;
+/*
+*@author  liyanan 
+ aim 连接数据库
+*/
+public class DBUtils {
+	private DBUtils(){}
+	static{
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	//获得Connection的对象
+	public static Connection getConnection() throws SQLException{
+		return DriverManager.getConnection("jdbc:mysql://localhost:3306/flight","root","root");
+	}
+	//关闭Connection PreparedStatement ResultSet对象
+	public static void release(ResultSet res,Statement st,Connection conn){
+		if (res!=null) {
+			try {
+				res.close();
+			} catch (SQLException e) {
+				res=null;
+				e.printStackTrace();
+			}
+		}
+		if (st!=null) {
+			try {
+				st.close();
+			} catch (SQLException e) {
+				st=null;
+				e.printStackTrace();
+			}
+		}
+		if (conn!=null) {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				conn=null;
+				e.printStackTrace();
+			}
+		}
+	}
+	//数据库增，改，删代码执行
+	public static void excuteUpdate(String sql){
+		Connection conn=null;
+		Statement st=null;
+		try {
+			conn=getConnection();
+			st=conn.createStatement();
+			st.executeUpdate(sql);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			
+			release(null,st,conn);//查询resultSet 没有建立连接，所以设为null，只需要管部st,conn即可
+		}
+	}
+	//直接获得所有用户
+	public static List<Account> excuteQueryUser(String sql) {
+		Connection conn=null;
+		Statement st=null;
+		ResultSet res=null;
+		List<Account> list=new ArrayList<Account>();
+		try {
+			conn=getConnection();
+			st=conn.createStatement();
+			res=st.executeQuery(sql);
+			while(res.next()) {
+				Account user=null;
+				int id=res.getInt("id_user");
+				String username=res.getString("username");
+				String password=res.getString("password");
+				String realName=res.getString("realname");
+				long money=res.getLong("money");
+				int power=res.getInt("power");
+				user=new Account(id,username,password,realName,money,power);
+				list.add(user);
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			release(res,st,conn);
+		}
+	}
+	//从Flight数据库得所有的航班
+	public static List<Flight> excuteQueryFlight(String sql){
+		Connection conn=null;
+		Statement st=null;
+		ResultSet res=null;
+		List<Flight> list=new ArrayList<Flight>();
+		try {
+			conn=getConnection();
+			st=conn.createStatement();
+			res=st.executeQuery(sql);
+			while(res.next()) {
+				Flight flight=null;
+				int id=res.getInt("id");
+				String flighnumber=res.getString("id_flight");
+				String company=res.getString("company");
+				String start=res.getString("start_state");
+				String end=res.getString("end_state");
+				String startTime=res.getString("start_time");
+				String endTime=res.getString("end_time");
+				int votes=res.getInt("votes");
+				int stocks=res.getInt("stocks");
+				int price=res.getInt("price");
+				flight=new Flight(id,flighnumber,company,start,end,startTime,endTime,votes,stocks,price);
+				list.add(flight);
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			release(res,st,conn);
+		}
+	}
+	public static List<Order> excuteQueryOrder(String sql){
+		Connection conn=null;
+		Statement st=null;
+		ResultSet res=null;
+		List<Order> list=new ArrayList<Order>();
+		try {
+			conn=getConnection();
+			st=conn.createStatement();
+			res=st.executeQuery(sql);
+			while(res.next()) {
+				Order order=null;
+				int id=res.getInt("id");
+				int id_user=res.getInt("id_user");
+				String id_fligt=res.getString("id_flight");
+				String company=res.getString("company");
+				String start=res.getString("start_state");
+				String end=res.getString("end_state");
+				String startTime=res.getString("start_time");
+				String endTime=res.getString("end_time");
+				int price=res.getInt("price");
+				String order_time=res.getString("date");
+				order=new Order(id,id_user,id_fligt,company,start,end,startTime,endTime,price,order_time);
+				list.add(order);
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}finally{
+			release(res,st,conn);
+		}
+	}
+
+//直接获得所需的Account用户
+public static Account excuteQueryAccount(String sql) {
+	Connection conn=null;
+	Statement st=null;
+	ResultSet res=null;
+	try {
+		conn=getConnection();
+		st=conn.createStatement();
+		res=st.executeQuery(sql);
+		while(res.next()) {
+			Account account=new Account();
+			int id_user=res.getInt("id_user");
+			String username=res.getString("username");
+			String password=res.getString("password");
+			String realName=res.getString("realname");
+			long money=res.getLong("money");
+			int power=res.getInt("power");
+			
+			account=new Account(id_user,username,password,realName,money,power);
+			
+			return account;
+		}return null;
+	} catch (SQLException e) {
+		e.printStackTrace();
+		return null;
+	}finally{
+		release(res,st,conn);
+	}
+}
+public static Order excuteQueryOrder_1(String sql){
+Connection conn=null;
+Statement st=null;
+ResultSet res=null;
+try {
+	conn=getConnection();
+	st=conn.createStatement();
+	res=st.executeQuery(sql);
+	while(res.next()) {
+		Order order=null;
+		int id=res.getInt("id");
+		int id_user=res.getInt("id_user");
+		String id_fligt=res.getString("id_fligt");
+		String company=res.getString("company");
+		String start=res.getString("start");
+		String end=res.getString("end");
+		String startTime=res.getString("starttime");
+		String endTime=res.getString("endtime");
+		int price=res.getInt("price");
+	   order=new Order(id,id_user,id_fligt,company,start,end,startTime,endTime,price);
+		
+	   return order;
+	}
+	return  null;
+	} catch (SQLException e) {
+	e.printStackTrace();
+	return null;
+	}finally{
+	release(res,st,conn);
+	}
+}
+	public static List<Comment>excuteQueryComment(String sql){
+			Connection conn=null;
+			Statement st=null;
+			ResultSet res=null;
+			List<Comment> commentList = new ArrayList<Comment>();
+			try{
+				conn=getConnection();
+				st=conn.createStatement();
+				res=st.executeQuery(sql);
+			while(res.next()) {
+				Comment comments = null;
+				int id=res.getInt("id");
+				String username = res.getString("username");
+				String comment = res.getString("comment");
+				String date = res.getString("comment_time");
+			   comments = new Comment(id,username,comment,date);
+			   commentList.add(comments);
+			}
+			return  commentList;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			return null;
+			}finally{
+				release(res,st,conn);
+			}
+			
+		}
+}
