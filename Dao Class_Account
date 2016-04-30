@@ -1,0 +1,76 @@
+package com.flight.Dao;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import com.flight.DBUtils.DBUtils;
+import com.flight.domain.Account;
+
+public class AccountDao {
+	public void register(Account user){
+		String sql="INSERT INTO ACCOUNT_USER(username,password,realname,money) VALUES('"+user.getUsername()+"','"+user.getPassword()+"','"+user.getRealname()+"',"+user.getMoney()+")";
+		DBUtils.excuteUpdate(sql);
+		}
+	public void delete(Account user){
+		String sql="delete from ACCOUNT_USER where username='"+user.getUsername()+"'";
+		DBUtils.excuteUpdate(sql);
+		
+	}
+	public void update(Account user){
+		String sql="update ACCOUNT_USER set password='"+user.getPassword()+"',realname='"+user.getRealname()+"',money='"+ user.getMoney()+"' where username='"+user.getUsername()+"'";
+		DBUtils.excuteUpdate(sql);
+	}
+	public Account getOneUser(String username){
+		List<Account> list=getAllUser();
+		Iterator<Account> it=list.iterator();
+		Account account=null;
+		while (it.hasNext()) {
+			account=it.next();
+			if (username.equals(account.getUsername())) {
+				return account;
+			}
+		}
+		return null;
+	}
+	public List<Account> getAllUser(){
+		String sql="select * from ACCOUNT_USER";
+		return DBUtils.excuteQueryUser(sql);
+		} 
+	public Account getAccount(int id_user) {
+		
+		String sql="select * from account_user where id_user="+id_user+"";
+		return DBUtils.excuteQueryAccount(sql);
+		
+		
+	}
+	
+	
+//-----------------------------------------------------------------
+	//以下为SuperAdmin管理员 添加  删除  修改Admin管理员用的方法
+	public List<Account> getAllAdminUser() {
+		List<Account> users=getAllUser();
+		Iterator<Account> it = users.iterator();
+		List<Account> newList=new ArrayList<Account>();	
+		while(it.hasNext()){
+			Account acc=it.next();
+			if (acc.getPower()>=50) {
+				newList.add(acc);
+			}
+		}
+		return newList;
+	}
+	public void delete(int user_id){
+		String sql = "delete from ACCOUNT_USER WHERE id_user="+user_id+"";
+		DBUtils.excuteUpdate(sql);
+	}
+	public void reset(int user_id) {
+		String sql = "update ACCOUNT_USER set password='000000' where id_user='"+user_id+"'";
+		DBUtils.excuteUpdate(sql);
+	}
+	public void registerAdmin(Account user){
+		String sql="INSERT INTO ACCOUNT_USER(username,password,realname,money,power) VALUES('"+user.getUsername()+"','"+user.getPassword()+"','"+user.getRealname()+"',"+user.getMoney()+","+user.getPower()+")";
+		DBUtils.excuteUpdate(sql);
+		}
+	
+}
