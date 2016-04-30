@@ -1,0 +1,105 @@
+package com.flight.domain;
+
+public class Flight {
+	private int id; // primary key
+	private String flightNumber;//航班编号
+	private String company;//航空公司
+	private String start;//起始地
+	private String end;//到达地
+	private String startTime;//出发时间
+	private String endTime;//到达时间
+	private int votes;//总票数
+	private int stocks;//剩余票数
+	private int price;//价格
+	public String getFlighnumber() {
+		return flightNumber;
+	}
+	public void setFlighnumber(String flighnumber) {
+		this.flightNumber = flighnumber;
+	}
+	public String getCompany() {
+		return company;
+	}
+	public void setCompany(String company) {
+		this.company = company;
+	}
+	public String getStart() {
+		return start;
+	}
+	public void setStart(String start) {
+		this.start = start;
+	}
+	public String getEnd() {
+		return end;
+	}
+	public void setEnd(String end) {
+		this.end = end;
+	}
+	public String getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+	public String getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+	public int getVotes() {
+		return votes;
+	}
+	public void setVotes(int votes) {
+		this.votes = votes;
+	}
+	public int getStocks() {
+		return stocks;
+	}
+	public void setStocks(int stocks) {
+		this.stocks = stocks;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	public Flight(String start, String end) {
+		this.start = start;
+		this.end = end;
+	}
+	public Flight(int id,String flighnumber, String company, String start, String end,
+			String startTime, String endTime, int votes, int stocks, int price) {
+		this.id = id;
+		this.flightNumber = flighnumber;
+		this.company = company;
+		this.start = start;
+		this.end = end;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.votes = votes;
+		this.stocks = stocks;
+		this.price = price;
+	}
+	public Flight(String flighnumber, String company, String start, String end,
+			String startTime, String endTime, int votes, int stocks, int price) {
+		this.flightNumber = flighnumber;
+		this.company = company;
+		this.start = start;
+		this.end = end;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.votes = votes;
+		this.stocks = stocks;
+		this.price = price;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public Flight() {
+		}
+}
