@@ -1,0 +1,138 @@
+package com.flight.domain;
+
+public class Account {
+	private int id_user;//int key primary auto_increment..
+	private String username;//用户名.....not null
+	private String password;//用户密码 not  null
+	private String realname;//真实姓名 not null
+	private long money;//余额  默认为0
+	private int power;//权限默认值：10
+	/**
+	 * @param id int 由数据库Database主键primary key auto_increment
+	 * @param username String 用户名  not null
+	 * @param password String 用户密码  not null
+	 * @param realname String 只是姓名  not null
+	 * @param money long 余额 defualt 0
+	 * @param power int 权限  defualt 10(User 10 NormalAdmin 50 SuperAdmin 100)
+	 * /
+	
+	/**
+   	 * 带所有参数的构造方法 
+   	 * 从数据库读取用户+管理员(Super+Normal)的信息的时候使用
+   	 * 生成所有用户对象
+   	 */
+	public Account(int id, String username, String password, String realname, long money, int power) {
+		this.id_user = id;
+   		this.username = username;
+		this.password = password;
+		this.realname = realname;
+		this.money = money;
+		this.power=power;
+   	}
+	
+	/**
+   	 * 带username,password,realname,power的构造方法 
+   	 * Super管理员添加Normal管理员使用，生成管理员对象
+   	 */
+	public Account(String username,String password,String realname,long money,int power){
+		this.username=username;
+		this.password=password;
+		this.realname=realname;
+		this.money=money;
+		this.power=power;
+	}
+	
+	/**
+	 * 带username,password,realname参数的构造方法
+	 * 普通用户注册时，生成对象！
+	 */
+	public Account( String username, String password, String realname) {
+		this.username = username;
+		this.password = password;
+		this.realname = realname;
+		this.money = 0;
+		this.power=10;
+	}
+
+	public Account( String username, String password, String realname,long money) {
+		this.username = username;
+		this.password = password;
+		this.realname = realname;
+		this.money = 0;
+		this.power=10;
+	}
+	
+	/**
+   	 * 空参数构造方法
+   	 */
+	public Account() {}
+	
+	/**
+	 * id 的get 方法
+	 */
+	public int getId() {
+		return id_user;
+	}
+	
+	/**
+	 * username 的get set 方法
+	 */
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
+	/**
+	 * password 的get set 方法
+	 */
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	/**
+	 * realname 的get set 方法
+	 */
+	public String getRealname() {
+		return realname;
+	}
+	public void setRealname(String realname) {
+		this.realname = realname;
+	}
+	
+	/**
+	 * money 的get set 方法
+	 */
+	public long getMoney() {
+		return money;
+	}
+	public void setMoney(long money) {
+		this.money = money;
+	}
+	
+	/**
+	 * power 的get set 方法
+	 */
+	public int getPower() {
+		return power;
+	}
+
+	public void setPower(int power) {
+		this.power = power;
+	}
+	public  Account(Account a){//zeng
+		this.id_user=a.getId();
+		this.username=a.getUsername();
+		this.password=a.getPassword();
+		this.realname=a.getRealname();
+		this.money=a.getMoney();
+		this.power=a.getPower();
+	}
+
+
+	
+}
